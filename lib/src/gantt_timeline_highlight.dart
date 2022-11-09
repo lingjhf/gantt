@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gantt/src/controllers/timeline_conroller.dart';
 
-import 'providers/timeline_highlight_provider.dart';
 import 'utils/datetime.dart';
 
-class GanttTimelineHighlight extends ConsumerWidget {
-  const GanttTimelineHighlight({super.key});
+class GanttTimelineHighlight extends StatefulWidget {
+  const GanttTimelineHighlight({super.key, required this.controller});
 
+  final GanttTimelineController controller;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var provider = ref.watch(ganttTimelineHighlightProvider);
-    if (provider == null) {
+  State<StatefulWidget> createState() => _GanttTimelineHighlightState();
+}
+
+class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
+  @override
+  Widget build(BuildContext context) {
+    if (!widget.controller.highlightVisible) {
       return const Positioned(left: 0, child: SizedBox());
     }
 
     return Positioned(
-      left: provider.left,
+      left: widget.controller.highlightLeft,
       top: 0,
       bottom: 0,
       child: Container(
-        width: provider.width,
+        width: widget.controller.highlightWidth,
         padding: const EdgeInsets.symmetric(horizontal: 4),
         decoration: const BoxDecoration(
           color: Colors.blue,
@@ -27,10 +31,11 @@ class GanttTimelineHighlight extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            Text(provider.startDate.format('MM-dd')),
+            Text(widget.controller.highlightStartDate!.format('MM-dd')),
             const Spacer(),
-            if (provider.startDate != provider.endDate)
-              Text(provider.endDate.format('MM-dd'))
+            if (widget.controller.highlightStartDate !=
+                widget.controller.highlightEndDate)
+              Text(widget.controller.highlightEndDate!.format('MM-dd'))
           ],
         ),
       ),

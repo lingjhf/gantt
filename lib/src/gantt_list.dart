@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GanttList extends ConsumerWidget {
+class GanttList extends StatelessWidget {
   const GanttList({super.key, this.children = const []});
 
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: children.length,
       itemBuilder: (context, index) {

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gantt/src/controllers/timeline_conroller.dart';
 import 'package:gantt/src/models/timeline.dart';
-import 'package:gantt/src/providers/timeline_provider.dart';
 
-class GanttBackground extends ConsumerWidget {
-  const GanttBackground({super.key});
+class GanttBackground extends StatefulWidget {
+  const GanttBackground({super.key, required this.controller});
+  final GanttTimelineController controller;
+  @override
+  State<StatefulWidget> createState() => _GanttBackgroundState();
+}
 
+class _GanttBackgroundState extends State<GanttBackground> {
   List<Widget> buildWeekHighlight(
       List<GanttTimelineItemModel> timelineItems, double dayWidth) {
     var children = <Widget>[];
@@ -50,12 +54,12 @@ class GanttBackground extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var timelineItems =
-        ref.watch(ganttTimelineProvider.select((value) => value.secondItems));
-    var dayWidth =
-        ref.watch(ganttTimelineProvider.select((value) => value.unit.dayWidth));
-
-    return Stack(children: buildWeekHighlight(timelineItems, dayWidth));
+  Widget build(BuildContext context) {
+    return Stack(
+      children: buildWeekHighlight(
+        widget.controller.mainItems,
+        widget.controller.unit.dayWidth,
+      ),
+    );
   }
 }
