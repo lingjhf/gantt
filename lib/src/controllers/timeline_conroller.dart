@@ -17,7 +17,7 @@ class GanttTimelineController with EventBusMixin {
     updateTimeline();
     onScrollListener();
   }
-  final ScrollController scrollController;
+  ScrollController scrollController;
   DateTime startDate;
   DateTime endDate;
   GanttDateUnit unit;
