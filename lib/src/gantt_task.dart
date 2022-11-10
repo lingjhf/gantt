@@ -45,6 +45,7 @@ class _GanttTaskState extends State<GanttTask> {
 
   @override
   void initState() {
+    widget.controller.onFocusOut(() => setState(() {}));
     super.initState();
   }
 
@@ -176,9 +177,7 @@ class _GanttTaskState extends State<GanttTask> {
   }
 
   void onTap() {
-    setState(() {
-      widget.controller.focused = true;
-    });
+    widget.controller.onFocusIn(() => setState(() {}));
   }
 
   @override

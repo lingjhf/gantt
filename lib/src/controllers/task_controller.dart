@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'gantt_controller.dart';
 
 import '../utils/gantt.dart';
@@ -263,5 +265,22 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       invisibleTimelineHighlight();
     }
     width = timelineController.highlight.width;
+  }
+
+  void onFocusOut(VoidCallback callback) {
+    ganttController.on('onCurrentSubjectChange', () {
+      if (id != ganttController.currentSubject?.id) {
+        focused = false;
+        callback();
+      }
+    });
+  }
+
+  void onFocusIn(VoidCallback callback) {
+    if (id != ganttController.currentSubject?.id) {
+      focused = true;
+      ganttController.setCurrentSubject(this);
+      callback();
+    }
   }
 }

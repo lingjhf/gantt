@@ -92,6 +92,10 @@ class _GanttContainerState extends State<GanttContainer> {
     subjects = children;
   }
 
+  void onTapBody() {
+    ganttController.setCurrentSubject(null);
+  }
+
   //构造时间轴
   Widget buildTimeline() {
     return Material(
@@ -117,7 +121,10 @@ class _GanttContainerState extends State<GanttContainer> {
       child: Stack(
         children: [
           GanttBackground(controller: ganttTimelineController),
-          GanttList(children: subjects),
+          GestureDetector(
+            onTap: onTapBody,
+            child: GanttList(children: subjects),
+          ),
         ],
       ),
     );

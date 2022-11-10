@@ -4,5 +4,12 @@ import 'package:gantt/src/mixins/event_bus.dart';
 class GanttController with EventBusMixin {
   bool subjectFocused = false;
 
-  GanttSubjectController? currentSubject;
+  GanttSubjectController? _currentSubject;
+
+  setCurrentSubject(GanttSubjectController? value) {
+    _currentSubject = value;
+    emit('onCurrentSubjectChange');
+  }
+
+  GanttSubjectController? get currentSubject => _currentSubject;
 }
