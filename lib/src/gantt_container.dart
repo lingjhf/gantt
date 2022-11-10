@@ -62,6 +62,7 @@ class _GanttContainerState extends State<GanttContainer> {
       ganttTimelineController.viewWidth = widget.viewWidth;
       ganttTimelineController.updateTimeline();
     }
+    ganttTimelineController.scrollController = widget.scrollController;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -74,7 +75,6 @@ class _GanttContainerState extends State<GanttContainer> {
             title: item.title,
             controller: GanttTaskController(
               timelineController: ganttTimelineController,
-              scrollController: widget.scrollController,
               startDate: item.startDate,
               endDate: item.endDate,
               progress: item.progress,
