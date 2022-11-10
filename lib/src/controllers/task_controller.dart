@@ -68,6 +68,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   void visibleTimelineHighlight() {
     timelineController.updateHighlight(
       visible: true,
+      width: width,
+      left: left,
       startDate: _startDate,
       endDate: _endDate,
     );
@@ -272,6 +274,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       if (id != ganttController.currentSubject?.id) {
         focused = false;
         callback();
+      } else {
+        invisibleTimelineHighlight();
       }
     });
   }
@@ -280,6 +284,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     if (id != ganttController.currentSubject?.id) {
       focused = true;
       ganttController.setCurrentSubject(this);
+      visibleTimelineHighlight();
       callback();
     }
   }

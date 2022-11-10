@@ -100,6 +100,10 @@ class _GanttTaskState extends State<GanttTask> {
     setState(() => widget.controller.progressUpdate(details.globalPosition.dx));
   }
 
+  void onTap() {
+    widget.controller.onFocusIn(() => setState(() {}));
+  }
+
   Widget buildResizeLeft() {
     return SizedBox(
       width: widget.resizeHandleWidth,
@@ -174,10 +178,6 @@ class _GanttTaskState extends State<GanttTask> {
         ),
       ),
     );
-  }
-
-  void onTap() {
-    widget.controller.onFocusIn(() => setState(() {}));
   }
 
   @override
