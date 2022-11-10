@@ -270,11 +270,10 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   }
 
   void onFocusOut(VoidCallback callback) {
-    ganttController.on('onCurrentSubjectChange', () {
-      if (id != ganttController.currentSubject?.id) {
+    ganttController.on('onCurrentSubjectChange', (oldId) {
+      if (id == oldId) {
         focused = false;
         callback();
-      } else {
         invisibleTimelineHighlight();
       }
     });

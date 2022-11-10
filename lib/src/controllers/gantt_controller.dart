@@ -7,8 +7,9 @@ class GanttController with EventBusMixin {
   GanttSubjectController? _currentSubject;
 
   setCurrentSubject(GanttSubjectController? value) {
+    var oldId = _currentSubject?.id;
     _currentSubject = value;
-    emit('onCurrentSubjectChange');
+    emit('onCurrentSubjectChange', oldId);
   }
 
   GanttSubjectController? get currentSubject => _currentSubject;
