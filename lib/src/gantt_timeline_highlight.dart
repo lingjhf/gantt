@@ -13,30 +13,39 @@ class GanttTimelineHighlight extends StatefulWidget {
 
 class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
   @override
-  Widget build(BuildContext context) {
-    if (!widget.controller.highlightVisible) {
-      return const Positioned(left: 0, child: SizedBox());
-    }
+  void initState() {
+    widget.controller.on('onHighlightChange', () {
+      setState(() {});
+    });
+    super.initState();
+  }
 
+  String get startDateText =>
+      widget.controller.highlightStartDate?.format('MM-dd') ?? '';
+
+  String get endDateText =>
+      widget.controller.highlightStartDate != widget.controller.highlightEndDate
+          ? widget.controller.highlightEndDate?.format('MM-dd') ?? ''
+          : '';
+
+  @override
+  Widget build(BuildContext context) {
     return Positioned(
       left: widget.controller.highlightLeft,
       top: 0,
       bottom: 0,
-      child: Container(
-        width: widget.controller.highlightWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.all(Radius.circular(2)),
-        ),
-        child: Row(
-          children: [
-            Text(widget.controller.highlightStartDate!.format('MM-dd')),
-            const Spacer(),
-            if (widget.controller.highlightStartDate !=
-                widget.controller.highlightEndDate)
-              Text(widget.controller.highlightEndDate!.format('MM-dd'))
-          ],
+      child: Visibility(
+        visible: widget.controller.highlightVisible,
+        child: Container(
+          width: widget.controller.highlightWidth,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          decoration: const BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(2)),
+          ),
+          child: Row(
+            children: [Text(startDateText), const Spacer(), Text(endDateText)],
+          ),
         ),
       ),
     );
