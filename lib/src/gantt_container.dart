@@ -36,6 +36,8 @@ class GanttContainer extends StatefulWidget {
 class _GanttContainerState extends State<GanttContainer> {
   late GanttTimelineController ganttTimelineController;
 
+  List<Widget> subjects = [];
+
   @override
   void initState() {
     ganttTimelineController = GanttTimelineController(
@@ -50,12 +52,13 @@ class _GanttContainerState extends State<GanttContainer> {
       setState(() {});
     });
 
+    initSujects();
     super.initState();
   }
 
-  List<Widget> buildSubject(List<GanttSubjectData> data) {
+  void initSujects() {
     final List<Widget> children = [];
-    for (var item in data) {
+    for (var item in widget.data) {
       if (item is GanttTaskData) {
         children.add(
           GanttTask(
@@ -71,7 +74,7 @@ class _GanttContainerState extends State<GanttContainer> {
         );
       } else if (item is GanttMilestoneData) {}
     }
-    return children;
+    subjects = children;
   }
 
   //构造时间轴
@@ -99,7 +102,7 @@ class _GanttContainerState extends State<GanttContainer> {
       child: Stack(
         children: [
           GanttBackground(controller: ganttTimelineController),
-          GanttList(children: buildSubject(widget.data)),
+          GanttList(children: subjects),
         ],
       ),
     );
