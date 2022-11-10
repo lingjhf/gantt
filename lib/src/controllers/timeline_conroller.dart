@@ -13,7 +13,7 @@ class GanttTimelineController with EventBusMixin {
     this.viewWidth = 0,
   }) {
     initDates();
-    updateTotalWidth();
+    setTotalWidth();
     updateTimeline();
     onScrollListener();
   }
@@ -59,10 +59,6 @@ class GanttTimelineController with EventBusMixin {
     emit('onHighlightChange');
   }
 
-  void updateTotalWidth() {
-    totalWidth = dates.length * unit.dayWidth;
-  }
-
   void updateTimeline() {
     switch (unit) {
       case GanttDateUnit.day:
@@ -100,29 +96,31 @@ class GanttTimelineController with EventBusMixin {
       secondItems: mainItems,
       scrollOffset: offset,
     );
+    emit('onChange');
+  }
+
+  void setTotalWidth() {
+    totalWidth = dates.length * unit.dayWidth;
   }
 
   void onScrollListener() {
     scrollController.addListener(() {
       updateTimeline();
-      emit('onChange');
     });
   }
 
   void addBackDay() {
     endDate = endDate.add(const Duration(days: 1));
     dates.add(endDate);
-    updateTotalWidth();
+    setTotalWidth();
     updateTimeline();
-    emit('onChange');
   }
 
   void addForwardDay() {
     startDate = startDate.subtract(const Duration(days: 1));
     dates.insert(0, startDate);
-    updateTotalWidth();
+    setTotalWidth();
     updateTimeline();
-    emit('onChange');
   }
 }
 
