@@ -1,7 +1,7 @@
 mixin EventBusMixin {
   final _map = <String, List<Function>>{};
 
-  void on(String key, Function callback) {
+  void on(String key, Function(dynamic) callback) {
     var values = _map[key];
     if (values == null) {
       _map[key] = [callback];
@@ -16,11 +16,7 @@ mixin EventBusMixin {
       return;
     }
     for (var value in values) {
-      if (arg != null) {
-        value.call(arg);
-      } else {
-        value.call();
-      }
+      value.call(arg);
     }
   }
 }
