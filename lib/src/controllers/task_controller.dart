@@ -1,3 +1,5 @@
+import 'gantt_controller.dart';
+
 import '../utils/gantt.dart';
 import 'subject_controller.dart';
 import 'timeline_conroller.dart';
@@ -6,6 +8,7 @@ import '../mixins/drag_resize.dart';
 
 class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   GanttTaskController({
+    required this.ganttController,
     required this.timelineController,
     DateTime? startDate,
     DateTime? endDate,
@@ -15,6 +18,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _updateWidthByDate();
     _updateLeftByDate();
   }
+
+  GanttController ganttController;
 
   GanttTimelineController timelineController;
 

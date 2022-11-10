@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gantt/src/controllers/gantt_controller.dart';
 import 'package:gantt/src/controllers/task_controller.dart';
 import 'package:gantt/src/controllers/timeline_conroller.dart';
 import 'package:gantt/src/gantt_task.dart';
@@ -34,12 +35,16 @@ class GanttContainer extends StatefulWidget {
 }
 
 class _GanttContainerState extends State<GanttContainer> {
+  late GanttController ganttController;
+
   late GanttTimelineController ganttTimelineController;
 
   List<Widget> subjects = [];
 
   @override
   void initState() {
+    ganttController = GanttController();
+
     ganttTimelineController = GanttTimelineController(
       scrollController: widget.scrollController,
       startDate: widget.startDate,
@@ -74,6 +79,7 @@ class _GanttContainerState extends State<GanttContainer> {
           GanttTask(
             title: item.title,
             controller: GanttTaskController(
+              ganttController: ganttController,
               timelineController: ganttTimelineController,
               startDate: item.startDate,
               endDate: item.endDate,
