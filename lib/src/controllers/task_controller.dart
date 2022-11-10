@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../utils/gantt.dart';
 import 'subject_controller.dart';
 import 'timeline_conroller.dart';
@@ -9,7 +7,6 @@ import '../mixins/drag_resize.dart';
 class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   GanttTaskController({
     required this.timelineController,
-    required this.scrollController,
     DateTime? startDate,
     DateTime? endDate,
     this.progress = 0,
@@ -20,7 +17,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   }
 
   GanttTimelineController timelineController;
-  ScrollController scrollController;
 
   bool focused = false;
 
@@ -42,6 +38,12 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   double get progressWidth => _progressWidth;
 
   double get dayWidth => timelineController.unit.dayWidth;
+
+  double get scrollOffset => timelineController.scrollController.offset;
+
+  void scrollJumpTo(double value) {
+    timelineController.scrollController.jumpTo(value);
+  }
 
   void _updateLeftByDate() {
     var startIndex = timelineController.dates.indexOf(_startDate);
@@ -91,8 +93,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   }
 
   bool _needScrollLeft(double left) {
-    if (left < scrollController.offset) {
-      scrollController.jumpTo(left);
+    if (left < scrollOffset) {
+      scrollJumpTo(left);
       return true;
     }
     return false;
@@ -100,10 +102,9 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
 
   bool _needScrollRight(double left, double width) {
     var leftWidthSum = left + width;
-    var offsetWidthSum = scrollController.offset + timelineController.viewWidth;
+    var offsetWidthSum = scrollOffset + timelineController.viewWidth;
     if (leftWidthSum > offsetWidthSum) {
-      scrollController
-          .jumpTo(scrollController.offset + (leftWidthSum - offsetWidthSum));
+      scrollJumpTo(scrollOffset + (leftWidthSum - offsetWidthSum));
       return true;
     }
     return false;
