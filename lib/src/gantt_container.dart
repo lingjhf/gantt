@@ -56,6 +56,15 @@ class _GanttContainerState extends State<GanttContainer> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(covariant GanttContainer oldWidget) {
+    if (ganttTimelineController.viewWidth != widget.viewWidth) {
+      ganttTimelineController.viewWidth = widget.viewWidth;
+      ganttTimelineController.updateTimeline();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   void initSujects() {
     final List<Widget> children = [];
     for (var item in widget.data) {
