@@ -12,8 +12,10 @@ class GanttTimelineController with EventBusMixin {
     this.unit = GanttDateUnit.day,
     this.viewWidth = 0,
   }) {
-    updateDates();
+    initDates();
+    updateTotalWidth();
     updateTimeline();
+    onScrollListener();
   }
   final ScrollController scrollController;
   DateTime startDate;
@@ -35,6 +37,14 @@ class GanttTimelineController with EventBusMixin {
 
   TimelineHandler timelineHandler = DayHandler();
 
+  void initDates() {
+    for (var current = startDate;
+        current.isBefore(endDate);
+        current = current.add(const Duration(days: 1))) {
+      dates.add(current);
+    }
+  }
+
   void updateHighlight({
     bool? visible,
     DateTime? startDate,
@@ -50,13 +60,8 @@ class GanttTimelineController with EventBusMixin {
     emit('onHighlightChange');
   }
 
-  void updateDates() {
-    for (var current = startDate;
-        current.isBefore(endDate);
-        current = current.add(const Duration(days: 1))) {
-      totalWidth += unit.dayWidth;
-      dates.add(current);
-    }
+  void updateTotalWidth() {
+    totalWidth = dates.length * unit.dayWidth;
   }
 
   void updateTimeline() {
@@ -98,14 +103,27 @@ class GanttTimelineController with EventBusMixin {
     );
   }
 
+  void onScrollListener() {
+    scrollController.addListener(() {
+      updateTimeline();
+      emit('onChange');
+    });
+  }
+
   void addBackDay() {
     endDate = endDate.add(const Duration(days: 1));
     dates.add(endDate);
+    updateTotalWidth();
+    updateTimeline();
+    emit('onChange');
   }
 
   void addForwardDay() {
     startDate = startDate.subtract(const Duration(days: 1));
     dates.insert(0, startDate);
+    updateTotalWidth();
+    updateTimeline();
+    emit('onChange');
   }
 }
 
