@@ -28,16 +28,13 @@ class GanttTask extends StatefulWidget {
 }
 
 class _GanttTaskState extends State<GanttTask> {
-  //任务是否聚焦
-  bool isFocus = false;
-
   //当任务聚焦时位置加上左边可调整大小的宽度
   //当任务失去焦点时等于任务实际位置
-  double get taskLeft => isFocus
+  double get taskLeft => widget.controller.focused
       ? widget.controller.left - widget.resizeHandleWidth
       : widget.controller.left;
 
-  double get taskWidth => isFocus
+  double get taskWidth => widget.controller.focused
       ? widget.controller.width + widget.resizeHandleWidth * 2
       : widget.controller.width;
 
@@ -178,6 +175,12 @@ class _GanttTaskState extends State<GanttTask> {
     );
   }
 
+  void onTap() {
+    setState(() {
+      widget.controller.focused = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -195,8 +198,12 @@ class _GanttTaskState extends State<GanttTask> {
                     height: widget.progressHeight,
                     child: Row(
                       children: [
-                        Visibility(visible: isFocus, child: buildResizeLeft()),
+                        Visibility(
+                          visible: widget.controller.focused,
+                          child: buildResizeLeft(),
+                        ),
                         GestureDetector(
+                          onTap: onTap,
                           onHorizontalDragStart: onDragStart,
                           onHorizontalDragUpdate: onDragUpdate,
                           onHorizontalDragEnd: onDragEnd,
@@ -207,12 +214,16 @@ class _GanttTaskState extends State<GanttTask> {
                             progressColor: widget.progressProgressColor,
                           ),
                         ),
-                        Visibility(visible: isFocus, child: buildResizeRight()),
+                        Visibility(
+                          visible: widget.controller.focused,
+                          child: buildResizeRight(),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Visibility(visible: isFocus, child: buildCursor()),
+                Visibility(
+                    visible: widget.controller.focused, child: buildCursor()),
               ],
             ),
           ),
