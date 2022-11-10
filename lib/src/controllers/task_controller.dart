@@ -169,6 +169,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
 
     timelineController.updateHighlight(
       left: startIndex * dayWidth,
+      width: width,
       startDate: _startDate,
       endDate: _endDate,
     );
