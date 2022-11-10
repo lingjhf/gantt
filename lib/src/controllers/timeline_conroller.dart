@@ -8,16 +8,16 @@ class GanttTimelineController with EventBusMixin {
   GanttTimelineController({
     required this.startDate,
     required this.endDate,
-    required this.scrollController,
+    required ScrollController scrollController,
     this.unit = GanttDateUnit.day,
     this.viewWidth = 0,
-  }) {
+  }) : _scrollController = scrollController {
     initDates();
     setTotalWidth();
     updateTimeline();
     onScrollListener();
   }
-  ScrollController scrollController;
+  ScrollController _scrollController;
   DateTime startDate;
   DateTime endDate;
   GanttDateUnit unit;
@@ -32,6 +32,13 @@ class GanttTimelineController with EventBusMixin {
   GanttTimelineHighlightModel highlight = const GanttTimelineHighlightModel();
 
   TimelineHandler timelineHandler = DayHandler();
+
+  set scrollController(ScrollController value) {
+    _scrollController = value;
+    onScrollListener();
+  }
+
+  ScrollController get scrollController => _scrollController;
 
   void initDates() {
     for (var current = startDate;
@@ -82,7 +89,7 @@ class GanttTimelineController with EventBusMixin {
     }
     headerItems.clear();
     mainItems.clear();
-    double offset = scrollController.offset;
+    double offset = _scrollController.offset;
     int startIndex = (offset / unit.dayWidth).floor();
     int endIndex = ((offset + viewWidth) / unit.dayWidth).ceil();
     if (endIndex > dates.length - 1) {
@@ -104,7 +111,7 @@ class GanttTimelineController with EventBusMixin {
   }
 
   void onScrollListener() {
-    scrollController.addListener(() {
+    _scrollController.addListener(() {
       updateTimeline();
     });
   }
