@@ -1,4 +1,3 @@
-
 mixin EventBusMixin {
   final _map = <String, List<Function>>{};
 
@@ -17,7 +16,11 @@ mixin EventBusMixin {
       return;
     }
     for (var value in values) {
-      value.call(arg);
+      if (arg != null) {
+        value.call(arg);
+      } else {
+        value.call();
+      }
     }
   }
 }
