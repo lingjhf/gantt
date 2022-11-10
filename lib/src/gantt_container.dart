@@ -53,7 +53,7 @@ class _GanttContainerState extends State<GanttContainer> {
       viewWidth: widget.viewWidth,
     );
 
-    ganttTimelineController.on('onChange', () {
+    ganttTimelineController.on('onChange', (arg) {
       setState(() {});
     });
 

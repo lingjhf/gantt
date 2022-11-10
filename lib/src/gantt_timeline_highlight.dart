@@ -14,7 +14,7 @@ class GanttTimelineHighlight extends StatefulWidget {
 class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
   @override
   void initState() {
-    widget.controller.on('onHighlightChange', () {
+    widget.controller.on('onHighlightChange', (arg) {
       setState(() {});
     });
     super.initState();

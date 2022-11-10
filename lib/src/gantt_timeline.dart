@@ -16,7 +16,7 @@ class GanttTimeline extends StatefulWidget {
 class _GanttTimelineState extends State<GanttTimeline> {
   @override
   void initState() {
-    widget.controller.on("onChange", () {
+    widget.controller.on("onChange", (arg) {
       setState(() {});
     });
     super.initState();
