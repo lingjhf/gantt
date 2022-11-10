@@ -179,7 +179,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     if (!focused) {
       invisibleTimelineHighlight();
     }
-    left = timelineController.highlightLeft;
+    left = timelineController.highlight.left;
   }
 
   @override
@@ -218,8 +218,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     if (!focused) {
       invisibleTimelineHighlight();
     }
-    left = timelineController.highlightLeft;
-    width = timelineController.highlightWidth;
+    left = timelineController.highlight.left;
+    width = timelineController.highlight.width;
   }
 
   @override
@@ -256,6 +256,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     if (!focused) {
       invisibleTimelineHighlight();
     }
-    width = timelineController.highlightWidth;
+    width = timelineController.highlight.width;
   }
 }

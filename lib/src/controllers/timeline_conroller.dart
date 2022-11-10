@@ -29,11 +29,7 @@ class GanttTimelineController with EventBusMixin {
   List<GanttTimelineItemModel> headerItems = [];
   List<GanttTimelineItemModel> mainItems = [];
 
-  bool highlightVisible = false;
-  DateTime? highlightStartDate;
-  DateTime? highlightEndDate;
-  double highlightLeft = 0;
-  double highlightWidth = 0;
+  GanttTimelineHighlightModel highlight = const GanttTimelineHighlightModel();
 
   TimelineHandler timelineHandler = DayHandler();
 
@@ -52,11 +48,14 @@ class GanttTimelineController with EventBusMixin {
     double? left,
     double? width,
   }) {
-    highlightVisible = visible ?? highlightVisible;
-    highlightStartDate = startDate ?? highlightStartDate;
-    highlightEndDate = endDate ?? highlightEndDate;
-    highlightLeft = left ?? highlightLeft;
-    highlightWidth = width ?? highlightWidth;
+    highlight = highlight.copyWith(
+      visible: visible,
+      startDate: startDate,
+      endDate: endDate,
+      left: left,
+      width: width,
+    );
+
     emit('onHighlightChange');
   }
 

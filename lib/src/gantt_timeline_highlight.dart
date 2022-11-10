@@ -21,23 +21,23 @@ class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
   }
 
   String get startDateText =>
-      widget.controller.highlightStartDate?.format('MM-dd') ?? '';
+      widget.controller.highlight.startDate?.format('MM-dd') ?? '';
 
-  String get endDateText =>
-      widget.controller.highlightStartDate != widget.controller.highlightEndDate
-          ? widget.controller.highlightEndDate?.format('MM-dd') ?? ''
-          : '';
+  String get endDateText => widget.controller.highlight.startDate !=
+          widget.controller.highlight.endDate
+      ? widget.controller.highlight.endDate?.format('MM-dd') ?? ''
+      : '';
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: widget.controller.highlightLeft,
+      left: widget.controller.highlight.left,
       top: 0,
       bottom: 0,
       child: Visibility(
-        visible: widget.controller.highlightVisible,
+        visible: widget.controller.highlight.visible,
         child: Container(
-          width: widget.controller.highlightWidth,
+          width: widget.controller.highlight.width,
           padding: const EdgeInsets.symmetric(horizontal: 4),
           decoration: const BoxDecoration(
             color: Colors.blue,
