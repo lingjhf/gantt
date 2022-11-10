@@ -43,17 +43,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
 
   double get dayWidth => timelineController.unit.dayWidth;
 
-  set startDate(DateTime value) {
-    _startDate = value;
-    _updateWidthByDate();
-    _updateLeftByDate();
-  }
-
-  set endDate(DateTime value) {
-    _endDate = value;
-    _updateWidthByDate();
-  }
-
   void _updateLeftByDate() {
     var startIndex = timelineController.dates.indexOf(_startDate);
     startIndex = startIndex < 0 ? 0 : startIndex;
@@ -175,8 +164,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     var startIndex = getStartIndex(left, dayWidth);
     var endIndex = getEndIndex(left, width, dayWidth);
 
-    startDate = timelineController.dates[startIndex];
-    endDate = timelineController.dates[endIndex - 1];
+    _startDate = timelineController.dates[startIndex];
+    _endDate = timelineController.dates[endIndex - 1];
 
     timelineController.updateHighlight(
       left: startIndex * dayWidth,
@@ -206,7 +195,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _needScrollLeft(left);
     if (width > dayWidth) {
       var startIndex = getStartIndex(left, dayWidth);
-      startDate = timelineController.dates[startIndex];
+      _startDate = timelineController.dates[startIndex];
     }
     double highlightLeft = 0;
     double highlightWidth = 0;
@@ -246,7 +235,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _needScrollRight(left, width);
     if (width > dayWidth) {
       var endIndex = getEndIndex(left, width, dayWidth);
-      endDate = timelineController.dates[endIndex - 1];
+      _endDate = timelineController.dates[endIndex - 1];
     }
     double highlightWidth = 0;
     if (width < dayWidth) {
