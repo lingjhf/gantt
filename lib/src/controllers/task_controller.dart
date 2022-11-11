@@ -293,4 +293,11 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       callback();
     }
   }
+
+  void onLeftChange(VoidCallback callback) {
+    timelineController.on('onChange', (p0) {
+      _updateLeftByDate();
+      callback();
+    });
+  }
 }

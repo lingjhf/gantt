@@ -46,6 +46,7 @@ class _GanttTaskState extends State<GanttTask> {
   @override
   void initState() {
     widget.controller.onFocusOut(() => setState(() {}));
+    widget.controller.onLeftChange(() => setState(() {}));
     super.initState();
   }
 
