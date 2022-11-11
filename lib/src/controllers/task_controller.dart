@@ -218,9 +218,11 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     if (width < dayWidth) {
       highlightLeft = leftWidthSum - dayWidth;
       highlightWidth = dayWidth;
+    } else {
+      highlightLeft = getAlignLeft(left, dayWidth);
+      highlightWidth = leftWidthSum - highlightLeft;
     }
-    highlightLeft = getAlignLeft(left, dayWidth);
-    highlightWidth = leftWidthSum - highlightLeft;
+
     timelineController.updateHighlight(
       startDate: _startDate,
       left: highlightLeft,
