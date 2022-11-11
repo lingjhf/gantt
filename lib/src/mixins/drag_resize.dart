@@ -1,8 +1,10 @@
-
 mixin DragResizeMixin {
   double left = 0;
 
   double _width = 0;
+
+  double deltaX = 0;
+
   set width(double value) {
     if (value < 0) {
       _width = 0;
@@ -21,7 +23,9 @@ mixin DragResizeMixin {
 
   //正在拖拽
   void dragUpdate(double dx) {
-    left = dx - pressedOffset;
+    var templeft = dx - pressedOffset;
+    deltaX = templeft - left;
+    left = templeft;
   }
 
   void resizeLeftStart(double dx) {
