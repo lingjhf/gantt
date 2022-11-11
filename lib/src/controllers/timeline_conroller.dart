@@ -128,6 +128,7 @@ class GanttTimelineController with EventBusMixin {
     dates.insert(0, startDate);
     setTotalWidth();
     updateTimeline();
+    emit('onAddForwardDay');
   }
 }
 
