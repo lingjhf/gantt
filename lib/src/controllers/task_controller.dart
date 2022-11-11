@@ -236,6 +236,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     }
     left = timelineController.highlight.left;
     width = timelineController.highlight.width;
+    updateProgressWidth();
   }
 
   @override
@@ -273,6 +274,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       invisibleTimelineHighlight();
     }
     width = timelineController.highlight.width;
+    updateProgressWidth();
   }
 
   void onFocusOut(VoidCallback callback) {
