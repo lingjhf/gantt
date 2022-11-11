@@ -169,8 +169,12 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     if (_needAddDayBack(left, width)) {
       return;
     }
-
-    _needScrollLeft(left) || _needScrollRight(left, width);
+    if (deltaX == 0) return;
+    if (deltaX < 0) {
+      _needScrollLeft(left);
+    } else {
+      _needScrollRight(left, width);
+    }
     var startIndex = getStartIndex(left, dayWidth);
     var endIndex = getEndIndex(left, width, dayWidth);
 
