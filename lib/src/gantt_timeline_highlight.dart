@@ -28,6 +28,18 @@ class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
       ? widget.controller.highlight.endDate?.format('MM-dd') ?? ''
       : '';
 
+  double get width {
+    if (widget.controller.highlight.startDate ==
+        widget.controller.highlight.endDate) {
+      return 45;
+    }
+    if (widget.controller.highlight.width < 80) {
+      return 80;
+    }
+
+    return widget.controller.highlight.width;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -37,7 +49,7 @@ class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
       child: Visibility(
         visible: widget.controller.highlight.visible,
         child: Container(
-          width: widget.controller.highlight.width,
+          width: width,
           padding: const EdgeInsets.symmetric(horizontal: 4),
           decoration: const BoxDecoration(
             color: Colors.blue,
