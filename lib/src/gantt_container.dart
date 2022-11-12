@@ -55,9 +55,8 @@ class _GanttContainerState extends State<GanttContainer> {
       viewWidth: widget.viewWidth,
     );
 
-    ganttTimelineController.on('onChange', (arg) {
-      setState(() {});
-    });
+    ganttTimelineController.on('onAddBackDay', (arg) => setState(() {}));
+    ganttTimelineController.on('onAddForwardDay', (arg) => setState(() {}));
 
     initSujects();
     super.initState();
