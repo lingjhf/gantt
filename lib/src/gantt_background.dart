@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gantt/src/controllers/timeline_conroller.dart';
-import 'package:gantt/src/models/timeline.dart';
 
 class GanttBackground extends StatefulWidget {
   const GanttBackground({super.key, required this.controller});
@@ -10,6 +9,12 @@ class GanttBackground extends StatefulWidget {
 }
 
 class _GanttBackgroundState extends State<GanttBackground> {
+  @override
+  void initState() {
+    widget.controller.on('onChange', (arg) => setState(() {}));
+    super.initState();
+  }
+
   Widget buildHighlight(double left, double width) {
     return Positioned(
       left: left,
@@ -22,39 +27,35 @@ class _GanttBackgroundState extends State<GanttBackground> {
     );
   }
 
-  List<Widget> buildWeekHighlight(
-      List<GanttTimelineItemModel> timelineItems, double dayWidth) {
+  @override
+  Widget build(BuildContext context) {
     var children = <Widget>[];
     double width = 0;
+    var dayWidth = widget.controller.unit.dayWidth;
 
-    for (int i = 0; i < timelineItems.length; i++) {
-      var item = timelineItems[i];
+    for (int i = widget.controller.startIndex;
+        i <= widget.controller.endIndex;
+        i++) {
+      var item = widget.controller.dates[i];
 
-      if (item.date.weekday == DateTime.saturday) {
+      if (item.weekday == DateTime.saturday) {
         width += dayWidth;
-        if (i + 1 == timelineItems.length) {
-          children.add(buildHighlight(item.left, width));
+        if (i == widget.controller.endIndex) {
+          children.add(buildHighlight(i * dayWidth, width));
         }
-      } else if (item.date.weekday == DateTime.sunday) {
+      } else if (item.weekday == DateTime.sunday) {
         width += dayWidth;
-        children.add(buildHighlight(
-          width > dayWidth ? timelineItems[i - 1].left : item.left,
-          width,
-        ));
+        children.add(
+          buildHighlight(
+            width > dayWidth ? (i - 1) * dayWidth : i * dayWidth,
+            width,
+          ),
+        );
         width = 0;
       }
     }
-
-    return children;
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Stack(
-      children: buildWeekHighlight(
-        widget.controller.mainItems,
-        widget.controller.unit.dayWidth,
-      ),
+      children: children,
     );
   }
 }
