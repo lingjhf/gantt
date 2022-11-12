@@ -10,6 +10,18 @@ class GanttBackground extends StatefulWidget {
 }
 
 class _GanttBackgroundState extends State<GanttBackground> {
+  Widget buildHighlight(double left, double width) {
+    return Positioned(
+      left: left,
+      top: 0,
+      bottom: 0,
+      child: Container(
+        width: width,
+        color: Colors.grey.shade100,
+      ),
+    );
+  }
+
   List<Widget> buildWeekHighlight(
       List<GanttTimelineItemModel> timelineItems, double dayWidth) {
     var children = <Widget>[];
@@ -21,31 +33,14 @@ class _GanttBackgroundState extends State<GanttBackground> {
       if (item.date.weekday == DateTime.saturday) {
         width += dayWidth;
         if (i + 1 == timelineItems.length) {
-          children.add(
-            Positioned(
-              left: item.left,
-              top: 0,
-              bottom: 0,
-              child: Container(
-                width: width,
-                color: Colors.grey.shade200,
-              ),
-            ),
-          );
+          children.add(buildHighlight(item.left, width));
         }
       } else if (item.date.weekday == DateTime.sunday) {
         width += dayWidth;
-        children.add(
-          Positioned(
-            left: width > dayWidth ? timelineItems[i - 1].left : item.left,
-            top: 0,
-            bottom: 0,
-            child: Container(
-              width: width,
-              color: Colors.grey.shade200,
-            ),
-          ),
-        );
+        children.add(buildHighlight(
+          width > dayWidth ? timelineItems[i - 1].left : item.left,
+          width,
+        ));
         width = 0;
       }
     }
