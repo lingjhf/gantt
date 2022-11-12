@@ -274,7 +274,7 @@ class QuarterHandler extends TimelineHandler {
     double scrollOffset = 0,
   }) {
     var key = 0;
-     var yearMap = <String, GanttTimelineItemModel>{};
+    var yearMap = <String, GanttTimelineItemModel>{};
     var quarterMap = <String, GanttTimelineItemModel>{};
     var offset = startIndex * dayWidth;
     for (int i = startIndex; i <= endIndex; i++) {
@@ -321,7 +321,9 @@ class HalfYearHandler extends TimelineHandler {
     double scrollOffset = 0,
   }) {
     var key = 0;
+    var yearMap = <String, GanttTimelineItemModel>{};
     var halfYearMap = <String, GanttTimelineItemModel>{};
+    var offset = startIndex * dayWidth;
     for (int i = startIndex; i <= endIndex; i++) {
       var date = dates[i];
       if ((date.month == DateTime.january || date.month == DateTime.july) &&
@@ -331,11 +333,22 @@ class HalfYearHandler extends TimelineHandler {
       var halfYearValue = halfYearMap['$key'];
       if (halfYearValue == null) {
         halfYearMap['$key'] =
-            GanttTimelineItemModel(width: dayWidth, date: date);
+            GanttTimelineItemModel(width: dayWidth, left: offset, date: date);
       } else {
         halfYearValue.width += dayWidth;
       }
+      offset += dayWidth;
+      yearMap['${date.year}'] =
+          GanttTimelineItemModel(width: (i + 1) * dayWidth, date: date);
     }
+    offset = scrollOffset;
+    yearMap.forEach((key, value) {
+      value.width = value.width - offset;
+      value.left = offset;
+      offset += value.width;
+    });
+    headerItems.addAll(yearMap.values);
+    mainItems.addAll(halfYearMap.values);
   }
 }
 
