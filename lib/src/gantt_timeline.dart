@@ -145,7 +145,25 @@ class _GanttTimelineState extends State<GanttTimeline> {
   }
 
   Widget buildQuater() {
-    return Column();
+    return Column(
+      children: [
+        Expanded(child: buildHeaderItems((item) => Text('${item.date.year}'))),
+        Expanded(
+          child: buildMainItems(
+            (item) => SingleChildScrollView(
+              child: Visibility(
+                visible: (item.date.month == DateTime.january ||
+                        item.date.month == DateTime.april ||
+                        item.date.month == DateTime.july ||
+                        item.date.month == DateTime.october) &&
+                    item.date.day == 1,
+                child: Text('${item.date.month}月'),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildHalfYear() {
