@@ -187,7 +187,14 @@ class _GanttTimelineState extends State<GanttTimeline> {
   }
 
   Widget buildYear() {
-    return Column();
+    return buildMainItems(
+      (item) => SingleChildScrollView(
+        child: Visibility(
+          visible: item.date.month == DateTime.january && item.date.day == 1,
+          child: Text('${item.date.year}年'),
+        ),
+      ),
+    );
   }
 
   @override
