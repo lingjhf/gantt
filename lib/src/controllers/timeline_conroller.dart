@@ -365,15 +365,19 @@ class YearHandler extends TimelineHandler {
     double scrollOffset = 0,
   }) {
     var yearMap = <String, GanttTimelineItemModel>{};
+    var offset = startIndex * dayWidth;
     for (int i = startIndex; i <= endIndex; i++) {
       var date = dates[i];
       var key = '${date.year}';
       var yearValue = yearMap[key];
       if (yearValue == null) {
-        yearMap[key] = GanttTimelineItemModel(width: dayWidth, date: date);
+        yearMap[key] =
+            GanttTimelineItemModel(width: dayWidth, left: offset, date: date);
       } else {
         yearValue.width += dayWidth;
       }
+      offset += dayWidth;
     }
+    mainItems.addAll(yearMap.values);
   }
 }
