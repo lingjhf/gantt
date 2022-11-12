@@ -192,6 +192,8 @@ class WeekHandler extends TimelineHandler {
   }) {
     var key = 0;
     var weekMap = <String, GanttTimelineItemModel>{};
+    var monthMap = <String, GanttTimelineItemModel>{};
+    var offset = startIndex * dayWidth;
     for (int i = startIndex; i <= endIndex; i++) {
       var date = dates[i];
       if (date.weekday == DateTime.monday) {
@@ -199,11 +201,23 @@ class WeekHandler extends TimelineHandler {
       }
       var weekValue = weekMap['$key'];
       if (weekValue == null) {
-        weekMap['$key'] = GanttTimelineItemModel(width: dayWidth, date: date);
+        weekMap['$key'] =
+            GanttTimelineItemModel(width: dayWidth, left: offset, date: date);
       } else {
         weekValue.width += dayWidth;
       }
+      offset += dayWidth;
+      monthMap['${date.year}_${date.month}'] =
+          GanttTimelineItemModel(width: (i + 1) * dayWidth, date: date);
     }
+    offset = scrollOffset;
+    monthMap.forEach((key, value) {
+      value.width = value.width - offset;
+      value.left = offset;
+      offset += value.width;
+    });
+    headerItems.addAll(monthMap.values);
+    mainItems.addAll(weekMap.values);
   }
 }
 
