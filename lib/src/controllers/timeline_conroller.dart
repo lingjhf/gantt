@@ -99,8 +99,8 @@ class GanttTimelineController with EventBusMixin {
       dates,
       startIndex,
       endIndex,
-      firstItems: headerItems,
-      secondItems: mainItems,
+      headerItems: headerItems,
+      mainItems: mainItems,
       scrollOffset: offset,
     );
     emit('onChange');
@@ -137,8 +137,8 @@ abstract class TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   });
 }
@@ -151,8 +151,8 @@ class DayHandler extends TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
     var offset = startIndex * dayWidth;
@@ -173,8 +173,8 @@ class DayHandler extends TimelineHandler {
       value.left = offset;
       offset += value.width;
     });
-    firstItems.addAll(monthMap.values);
-    secondItems.addAll(dayMap.values);
+    headerItems.addAll(monthMap.values);
+    mainItems.addAll(dayMap.values);
   }
 }
 
@@ -186,8 +186,8 @@ class WeekHandler extends TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
     var key = 0;
@@ -215,8 +215,8 @@ class MonthHandler extends TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
     var monthMap = <String, GanttTimelineItemModel>{};
@@ -241,8 +241,8 @@ class QuarterHandler extends TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
     var key = 0;
@@ -275,8 +275,8 @@ class HalfYearHandler extends TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
     var key = 0;
@@ -306,8 +306,8 @@ class YearHandler extends TimelineHandler {
     List<DateTime> dates,
     int startIndex,
     int endIndex, {
-    List<GanttTimelineItemModel> firstItems = const [],
-    List<GanttTimelineItemModel> secondItems = const [],
+    List<GanttTimelineItemModel> headerItems = const [],
+    List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
     var yearMap = <String, GanttTimelineItemModel>{};
