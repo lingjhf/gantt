@@ -98,19 +98,19 @@ class _GanttContainerState extends State<GanttContainer> {
 
   //构造时间轴
   Widget buildTimeline() {
-    return Material(
-      elevation: 2,
-      child: Container(
+    return Container(
+      height: 36,
+      decoration: BoxDecoration(
         color: Colors.white,
-        height: 36,
-        child: DefaultTextStyle(
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          child: GanttTimeline(controller: ganttTimelineController),
+        border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
+      ),
+      child: DefaultTextStyle(
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
         ),
+        child: GanttTimeline(controller: ganttTimelineController),
       ),
     );
   }

@@ -71,8 +71,8 @@ class _GanttTimelineState extends State<GanttTimeline> {
                         bottom: 0,
                         child: Container(
                           height: 8,
-                          width: 0.5,
-                          color: Colors.grey,
+                          width: 1,
+                          color: Colors.grey.shade100,
                         ),
                       )
                     ]),

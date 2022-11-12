@@ -17,7 +17,7 @@ class _GanttBackgroundState extends State<GanttBackground> {
       bottom: 0,
       child: Container(
         width: width,
-        color: Colors.grey.shade100,
+        color: const Color.fromARGB(21, 158, 158, 158),
       ),
     );
   }
