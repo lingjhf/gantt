@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gantt/src/controllers/timeline_conroller.dart';
+import 'package:gantt/src/models/timeline.dart';
 import 'utils/datetime.dart';
 import 'enums.dart';
 import 'gantt_timeline_highlight.dart';
@@ -22,64 +23,76 @@ class _GanttTimelineState extends State<GanttTimeline> {
     super.initState();
   }
 
+  Widget buildHeaderItems(Widget Function(GanttTimelineItemModel) builder) {
+    return Stack(
+      children: [
+        for (var item in widget.controller.headerItems)
+          Positioned(
+            left: item.left,
+            top: 0,
+            bottom: 0,
+            child: Container(
+              width: item.width,
+              alignment: Alignment.centerLeft,
+              child: builder(item),
+            ),
+          )
+      ],
+    );
+  }
+
+  Widget buildMainItems(Widget Function(GanttTimelineItemModel) builder) {
+    return Stack(
+      children: [
+        for (var item in widget.controller.mainItems)
+          Positioned(
+            left: item.left,
+            top: 0,
+            bottom: 0,
+            child: SizedBox(
+              width: item.width,
+              child: Stack(children: [
+                builder(item),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: 8,
+                    width: 1,
+                    color: Colors.grey.shade100,
+                  ),
+                )
+              ]),
+            ),
+          ),
+        GanttTimelineHighlight(controller: widget.controller)
+      ],
+    );
+  }
+
   Widget buildDay() {
     return Column(
       children: [
         Expanded(
-          child: Stack(
-            children: [
-              for (var item in widget.controller.headerItems)
-                Positioned(
-                  left: item.left,
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: item.width,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                        '${item.date.monthAbbreviation()} ${item.date.year}'),
-                  ),
-                )
-            ],
+          child: buildHeaderItems(
+            (item) =>
+                Text('${item.date.monthAbbreviation()} ${item.date.year}'),
           ),
         ),
         Expanded(
-          child: Stack(
-            children: [
-              for (var item in widget.controller.mainItems)
-                Positioned(
-                  left: item.left,
-                  top: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    width: item.width,
-                    child: Stack(children: [
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              item.date.weekdayAbbreviation().substring(0, 1),
-                            ),
-                            const SizedBox(width: 4),
-                            Text('${item.date.day}'),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          height: 8,
-                          width: 1,
-                          color: Colors.grey.shade100,
-                        ),
-                      )
-                    ]),
+          child: buildMainItems(
+            (item) => Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item.date.weekdayAbbreviation().substring(0, 1),
                   ),
-                ),
-              GanttTimelineHighlight(controller: widget.controller)
-            ],
+                  const SizedBox(width: 4),
+                  Text('${item.date.day}'),
+                ],
+              ),
+            ),
           ),
         ),
       ],
