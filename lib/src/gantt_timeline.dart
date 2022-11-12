@@ -127,7 +127,21 @@ class _GanttTimelineState extends State<GanttTimeline> {
   }
 
   Widget buildMonth() {
-    return Column();
+    return Column(
+      children: [
+        Expanded(child: buildHeaderItems((item) => Text('${item.date.year}'))),
+        Expanded(
+          child: buildMainItems(
+            (item) => SingleChildScrollView(
+              child: Visibility(
+                visible: item.date.day == 1,
+                child: Text('${item.date.month}月'),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildQuater() {
