@@ -153,6 +153,10 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   @override
   void dragStart(double dx) {
     super.dragStart(dx);
+    if (id != ganttController.currentSubject?.id) {
+      focused = true;
+      ganttController.setCurrentSubject(this);
+    }
     visibleTimelineHighlight();
   }
 
