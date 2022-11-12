@@ -110,15 +110,18 @@ class _GanttTimelineState extends State<GanttTimeline> {
         ),
         Expanded(
           child: buildMainItems(
-            (item) => Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  item.date.weekdayAbbreviation().substring(0, 1),
-                ),
-                const SizedBox(width: 4),
-                Text('${item.date.day}'),
-              ],
+            (item) => Visibility(
+              visible: item.date.weekday == DateTime.monday,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    item.date.weekdayAbbreviation().substring(0, 1),
+                  ),
+                  const SizedBox(width: 4),
+                  Text('${item.date.day}'),
+                ],
+              ),
             ),
           ),
         ),
