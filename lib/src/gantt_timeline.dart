@@ -100,7 +100,30 @@ class _GanttTimelineState extends State<GanttTimeline> {
   }
 
   Widget buildWeek() {
-    return Column();
+    return Column(
+      children: [
+        Expanded(
+          child: buildHeaderItems(
+            (item) =>
+                Text('${item.date.monthAbbreviation()} ${item.date.year}'),
+          ),
+        ),
+        Expanded(
+          child: buildMainItems(
+            (item) => Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  item.date.weekdayAbbreviation().substring(0, 1),
+                ),
+                const SizedBox(width: 4),
+                Text('${item.date.day}'),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildMonth() {
