@@ -233,17 +233,31 @@ class MonthHandler extends TimelineHandler {
     List<GanttTimelineItemModel> mainItems = const [],
     double scrollOffset = 0,
   }) {
+    var yearMap = <String, GanttTimelineItemModel>{};
     var monthMap = <String, GanttTimelineItemModel>{};
+    var offset = startIndex * dayWidth;
     for (int i = startIndex; i <= endIndex; i++) {
       var date = dates[i];
       var key = '${date.year}_${date.month}';
       var monthValue = monthMap[key];
       if (monthValue == null) {
-        monthMap[key] = GanttTimelineItemModel(width: dayWidth, date: date);
+        monthMap[key] =
+            GanttTimelineItemModel(width: dayWidth, left: offset, date: date);
       } else {
         monthValue.width += dayWidth;
       }
+      offset += dayWidth;
+      yearMap['${date.year}'] =
+          GanttTimelineItemModel(width: (i + 1) * dayWidth, date: date);
     }
+    offset = scrollOffset;
+    yearMap.forEach((key, value) {
+      value.width = value.width - offset;
+      value.left = offset;
+      offset += value.width;
+    });
+    headerItems.addAll(yearMap.values);
+    mainItems.addAll(monthMap.values);
   }
 }
 
