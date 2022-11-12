@@ -26,6 +26,9 @@ class GanttTimelineController with EventBusMixin {
 
   List<DateTime> dates = [];
 
+  int startIndex = 0;
+  int endIndex = 0;
+
   List<GanttTimelineItemModel> headerItems = [];
   List<GanttTimelineItemModel> mainItems = [];
 
@@ -90,8 +93,8 @@ class GanttTimelineController with EventBusMixin {
     headerItems.clear();
     mainItems.clear();
     double offset = _scrollController.offset;
-    int startIndex = (offset / unit.dayWidth).floor();
-    int endIndex = ((offset + viewWidth) / unit.dayWidth).ceil();
+    startIndex = (offset / unit.dayWidth).floor();
+    endIndex = ((offset + viewWidth) / unit.dayWidth).ceil();
     if (endIndex > dates.length - 1) {
       endIndex = dates.length - 1;
     }
