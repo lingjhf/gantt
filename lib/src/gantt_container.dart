@@ -41,6 +41,8 @@ class _GanttContainerState extends State<GanttContainer> {
 
   List<Widget> subjects = [];
 
+  double get timelineHeight => widget.unit == GanttDateUnit.year ? 36 / 2 : 36;
+
   @override
   void initState() {
     ganttController = GanttController();
@@ -99,7 +101,7 @@ class _GanttContainerState extends State<GanttContainer> {
   //构造时间轴
   Widget buildTimeline() {
     return Container(
-      height: 36,
+      height: timelineHeight,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
