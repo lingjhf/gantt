@@ -1,11 +1,16 @@
-mixin DragResizeMixin {
+import '../controllers/subject_controller.dart';
+
+mixin DragResizeMixin on GanttSubjectController {
   double _left = 0;
   double _width = 0;
   double _pressedOffset = 0;
 
   double _deltaX = 0;
 
+  @override
   double get left => _left;
+
+  @override
   set left(double value) {
     if (value != left) {
       _pressedOffset = _pressedOffset - (value - _left);
@@ -13,7 +18,10 @@ mixin DragResizeMixin {
     _left = value;
   }
 
+  @override
   double get width => _width;
+
+  @override
   set width(double value) {
     if (value < 0) {
       _width = 0;

@@ -10,6 +10,10 @@ abstract class GanttSubjectController {
   }) : id = id ?? const Uuid().v1();
   final String id;
 
+  double left = 0;
+
+  double width = 0;
+
   GanttController ganttController;
 
   GanttTimelineController timelineController;
