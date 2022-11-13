@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gantt/src/controllers/milestone_controller.dart';
+
+import 'controllers/milestone_controller.dart';
 
 class GanttMilestone extends StatefulWidget {
   const GanttMilestone({

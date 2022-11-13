@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:gantt/src/controllers/gantt_controller.dart';
-import 'package:gantt/src/controllers/milestone_controller.dart';
-import 'package:gantt/src/controllers/task_controller.dart';
-import 'package:gantt/src/controllers/timeline_conroller.dart';
-import 'package:gantt/src/gantt_milestone.dart';
-import 'package:gantt/src/gantt_task.dart';
-import 'package:gantt/src/models/milestone.dart';
-import 'package:gantt/src/models/subject.dart';
-import 'package:gantt/src/models/task.dart';
 
+import 'controllers/gantt_controller.dart';
+import 'controllers/milestone_controller.dart';
+import 'controllers/task_controller.dart';
+import 'controllers/timeline_controller.dart';
 import 'enums.dart';
 import 'gantt_background.dart';
 import 'gantt_list.dart';
+import 'gantt_milestone.dart';
+import 'gantt_task.dart';
 import 'gantt_timeline.dart';
+import 'models/milestone.dart';
+import 'models/subject.dart';
+import 'models/task.dart';
 
 class GanttContainer extends StatefulWidget {
   const GanttContainer({

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'gantt_controller.dart';
-
-import '../utils/gantt.dart';
-import 'subject_controller.dart';
-import 'timeline_conroller.dart';
-
 import '../mixins/drag_resize.dart';
+import '../utils/gantt.dart';
+import 'gantt_controller.dart';
+import 'subject_controller.dart';
+import 'timeline_controller.dart';
 
 class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   GanttTaskController({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gantt/src/controllers/timeline_conroller.dart';
 
+import 'controllers/timeline_controller.dart';
 import 'utils/datetime.dart';
 
 class GanttTimelineHighlight extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:gantt/src/controllers/subject_controller.dart';
-import 'package:gantt/src/mixins/event_bus.dart';
+import '../mixins/event_bus.dart';
+import 'subject_controller.dart';
 
 class GanttController with EventBusMixin {
   bool subjectFocused = false;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gantt/src/models/subject.dart';
 
 import 'enums.dart';
 import 'gantt_container.dart';
+import 'models/subject.dart';
 
 class Gantt extends StatelessWidget {
   const Gantt({

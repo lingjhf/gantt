@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gantt/src/controllers/timeline_conroller.dart';
+
+import 'controllers/timeline_controller.dart';
 
 class GanttBackground extends StatefulWidget {
   const GanttBackground({super.key, required this.controller});

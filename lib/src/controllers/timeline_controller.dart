@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:gantt/src/mixins/event_bus.dart';
-import 'package:gantt/src/models/timeline.dart';
 
 import '../enums.dart';
+import '../mixins/event_bus.dart';
+import '../models/timeline.dart';
 
 class GanttTimelineController with EventBusMixin {
   GanttTimelineController({

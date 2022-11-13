@@ -23,9 +23,9 @@ mixin DragResizeMixin {
 
   //正在拖拽
   void dragUpdate(double dx) {
-    var templeft = dx - pressedOffset;
-    deltaX = templeft - left;
-    left = templeft;
+    var tempLeft = dx - pressedOffset;
+    deltaX = tempLeft - left;
+    left = tempLeft;
   }
 
   void resizeLeftStart(double dx) {

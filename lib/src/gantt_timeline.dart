@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gantt/src/controllers/timeline_conroller.dart';
-import 'package:gantt/src/models/timeline.dart';
-import 'utils/datetime.dart';
+
+import 'controllers/timeline_controller.dart';
 import 'enums.dart';
 import 'gantt_timeline_highlight.dart';
+import 'models/timeline.dart';
+import 'utils/datetime.dart';
 
 class GanttTimeline extends StatefulWidget {
   const GanttTimeline({super.key, required this.controller});
@@ -17,7 +18,7 @@ class GanttTimeline extends StatefulWidget {
 class _GanttTimelineState extends State<GanttTimeline> {
   @override
   void initState() {
-    widget.controller.on("onChange", (arg) {
+    widget.controller.on('onChange', (arg) {
       setState(() {});
     });
     super.initState();
@@ -147,7 +148,7 @@ class _GanttTimelineState extends State<GanttTimeline> {
     );
   }
 
-  Widget buildQuater() {
+  Widget buildQuarter() {
     return Column(
       children: [
         Expanded(child: buildHeaderItems((item) => Text('${item.date.year}'))),
@@ -210,7 +211,7 @@ class _GanttTimelineState extends State<GanttTimeline> {
       case GanttDateUnit.month:
         return buildMonth();
       case GanttDateUnit.quarter:
-        return buildQuater();
+        return buildQuarter();
       case GanttDateUnit.halfYear:
         return buildHalfYear();
       case GanttDateUnit.year:

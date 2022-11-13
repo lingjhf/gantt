@@ -1,4 +1,4 @@
-import 'package:gantt/src/models/subject.dart';
+import 'subject.dart';
 
 class GanttMilestoneData extends GanttSubjectData {
   const GanttMilestoneData({this.date, this.finished = false});
