@@ -3,7 +3,7 @@ mixin DragResizeMixin {
   double _width = 0;
   double _pressedOffset = 0;
 
-  double deltaX = 0;
+  double _deltaX = 0;
 
   double get left => _left;
   set left(double value) {
@@ -22,6 +22,8 @@ mixin DragResizeMixin {
     _width = value;
   }
 
+  double get deltaX => _deltaX;
+
   //开始拖拽
   void dragStart(double dx) {
     _pressedOffset = dx - _left;
@@ -30,7 +32,7 @@ mixin DragResizeMixin {
   //正在拖拽
   void dragUpdate(double dx) {
     var tempLeft = dx - _pressedOffset;
-    deltaX = tempLeft - _left;
+    _deltaX = tempLeft - _left;
     _left = tempLeft;
   }
 
