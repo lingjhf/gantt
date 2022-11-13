@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import 'controllers/milestone_controller.dart';
@@ -24,7 +26,20 @@ class _GanttMilestoneState extends State<GanttMilestone> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Stack(
+      children: [
+        Positioned(
+          left: widget.controller.left,
+          child: Transform.rotate(
+            angle: math.pi / 4,
+            child: Container(
+              width: 20,
+              height: 20,
+              color: Colors.green,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
