@@ -134,6 +134,41 @@ class GanttTimelineController with EventBusMixin {
     updateTimeline();
     emit('onAddForwardDay');
   }
+
+  bool addDayForwardOf(double left) {
+    if (left < 0) {
+      addForwardDay();
+      return true;
+    }
+    return false;
+  }
+
+  bool addDayBackOf(double left, double width) {
+    if (left + width > totalWidth) {
+      addBackDay();
+      return true;
+    }
+    return false;
+  }
+
+  bool scrollLeftOf(double left) {
+    if (left < scrollController.offset) {
+      scrollController.jumpTo(left);
+      return true;
+    }
+    return false;
+  }
+
+  bool scrollRightOf(double left, double width) {
+    var scrollOffset = scrollController.offset;
+    var leftWidthSum = left + width;
+    var offsetWidthSum = scrollOffset + viewWidth;
+    if (leftWidthSum > offsetWidthSum) {
+      scrollController.jumpTo(scrollOffset + (leftWidthSum - offsetWidthSum));
+      return true;
+    }
+    return false;
+  }
 }
 
 abstract class TimelineHandler {
