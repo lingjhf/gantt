@@ -150,25 +150,6 @@ class GanttTimelineController with EventBusMixin {
     }
     return false;
   }
-
-  bool scrollLeftOf(double left) {
-    if (left < scrollController.offset) {
-      scrollController.jumpTo(left);
-      return true;
-    }
-    return false;
-  }
-
-  bool scrollRightOf(double left, double width) {
-    var scrollOffset = scrollController.offset;
-    var leftWidthSum = left + width;
-    var offsetWidthSum = scrollOffset + viewWidth;
-    if (leftWidthSum > offsetWidthSum) {
-      scrollController.jumpTo(scrollOffset + (leftWidthSum - offsetWidthSum));
-      return true;
-    }
-    return false;
-  }
 }
 
 abstract class TimelineHandler {
