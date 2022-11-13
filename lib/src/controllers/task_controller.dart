@@ -2,26 +2,22 @@ import 'package:flutter/material.dart';
 
 import '../mixins/drag_resize.dart';
 import '../utils/gantt.dart';
-import 'gantt_controller.dart';
+import 'progress_controller.dart';
 import 'subject_controller.dart';
-import 'timeline_controller.dart';
 
 class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   GanttTaskController({
-    required this.ganttController,
-    required this.timelineController,
+    required super.ganttController,
+    required super.timelineController,
     DateTime? startDate,
     DateTime? endDate,
-    this.progress = 0,
+    int progress = 0,
   })  : _startDate = startDate ?? DateTime.now(),
         _endDate = endDate ?? DateTime.now() {
     _updateWidthByDate();
     _updateLeftByDate();
+    _progressController = ProgressController(progress: progress, width: width);
   }
-
-  GanttController ganttController;
-
-  GanttTimelineController timelineController;
 
   bool focused = false;
 
@@ -29,33 +25,14 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
 
   DateTime _endDate;
 
-  //进度
-  int progress;
-
-  //进度条的宽度
-  double _progressWidth = 0;
-
-  //每一个百分点的宽度
-  double _percentageWidth = 0;
+  late ProgressController _progressController;
 
   final Map<String, GanttSubjectController> _subjectTree = {};
 
-  double get progressWidth => _progressWidth;
-
-  double get dayWidth => timelineController.unit.dayWidth;
-
-  double get scrollOffset => timelineController.scrollController.offset;
-
-  void scrollJumpTo(double value) {
-    timelineController.scrollController.jumpTo(value);
-  }
+  double get progressWidth => _progressController.progressWidth;
 
   void _updateLeftByDate() {
-    var startIndex = timelineController.dates.indexOf(_startDate);
-    startIndex = startIndex < 0 ? 0 : startIndex;
-    var tempLeft = startIndex * dayWidth;
-    pressedOffset = pressedOffset - (tempLeft - left);
-    left = tempLeft;
+    left = getSubjectLeft(_startDate);
   }
 
   void _updateWidthByDate() {
@@ -63,6 +40,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   }
 
   //显示时间轴高亮日期
+  @override
   void visibleTimelineHighlight() {
     timelineController.updateHighlight(
       visible: true,
@@ -73,45 +51,18 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     );
   }
 
-  //隐藏时间轴高亮日期
-  void invisibleTimelineHighlight() {
-    timelineController.updateHighlight(visible: false);
-  }
-
   bool _needAddDayForward(double left) {
-    if (left < 0) {
-      timelineController.addForwardDay();
+    if (timelineController.addDayForwardOf(left)) {
       _updateLeftByDate();
       timelineController.updateHighlight(left: this.left);
       return true;
     }
-
     return false;
   }
 
   bool _needAddDayBack(double left, double width) {
-    if (left + width > timelineController.totalWidth) {
-      timelineController.addBackDay();
+    if (timelineController.addDayBackOf(left, width)) {
       _updateLeftByDate();
-      return true;
-    }
-
-    return false;
-  }
-
-  bool _needScrollLeft(double left) {
-    if (left < scrollOffset) {
-      scrollJumpTo(left);
-      return true;
-    }
-    return false;
-  }
-
-  bool _needScrollRight(double left, double width) {
-    var leftWidthSum = left + width;
-    var offsetWidthSum = scrollOffset + timelineController.viewWidth;
-    if (leftWidthSum > offsetWidthSum) {
-      scrollJumpTo(scrollOffset + (leftWidthSum - offsetWidthSum));
       return true;
     }
     return false;
@@ -122,29 +73,12 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     // _subjectTree[subject]
   }
 
-  //更新进度条宽度
-  void updateProgressWidth() {
-    _progressWidth = width * progress / 100;
-  }
-
-  //开始改变进度
   void progressStart(double dx) {
-    _percentageWidth = width / 100;
-    pressedOffset = dx - _progressWidth;
+    _progressController.progressStart(dx);
   }
 
-  //改变进度
   void progressUpdate(double dx) {
-    var w = _percentageWidth * ((dx - pressedOffset) ~/ _percentageWidth);
-
-    if (w > width) {
-      w = width;
-    }
-    if (w < 0) {
-      w = 0;
-    }
-    progress = w > 0 ? w * 100 ~/ width : 0;
-    _progressWidth = w;
+    _progressController.progressUpdate(dx);
   }
 
   //注册时间轴高亮
@@ -173,9 +107,9 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     }
     if (deltaX == 0) return;
     if (deltaX < 0) {
-      _needScrollLeft(left);
+      timelineController.scrollLeftOf(left);
     } else {
-      _needScrollRight(left, width);
+      timelineController.scrollRightOf(left, width);
     }
     var startIndex = getStartIndex(left, dayWidth);
     var endIndex = getEndIndex(left, width, dayWidth);
@@ -207,9 +141,9 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   @override
   void resizeLeftUpdate(double dx) {
     super.resizeLeftUpdate(dx);
-    updateProgressWidth();
+    _progressController.width = width;
     if (_needAddDayForward(left)) return;
-    _needScrollLeft(left);
+    timelineController.scrollLeftOf(left);
     if (width > dayWidth) {
       var startIndex = getStartIndex(left, dayWidth);
       _startDate = timelineController.dates[startIndex];
@@ -238,7 +172,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     }
     left = timelineController.highlight.left;
     width = timelineController.highlight.width;
-    updateProgressWidth();
+    _progressController.width = width;
   }
 
   @override
@@ -250,9 +184,9 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   @override
   void resizeRightUpdate(double dx) {
     super.resizeRightUpdate(dx);
-    updateProgressWidth();
+    _progressController.width = width;
     if (_needAddDayBack(left, width)) return;
-    _needScrollRight(left, width);
+    timelineController.scrollRightOf(left, width);
     if (width > dayWidth) {
       var endIndex = getEndIndex(left, width, dayWidth);
       _endDate = timelineController.dates[endIndex - 1];
@@ -276,15 +210,15 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       invisibleTimelineHighlight();
     }
     width = timelineController.highlight.width;
-    updateProgressWidth();
+    _progressController.width = width;
   }
 
   void onFocusOut(VoidCallback callback) {
     ganttController.on('onCurrentSubjectChange', (oldId) {
       if (id == oldId) {
         focused = false;
-        callback();
         invisibleTimelineHighlight();
+        callback();
       }
     });
   }
