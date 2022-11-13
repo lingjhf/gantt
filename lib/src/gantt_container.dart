@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gantt/src/controllers/gantt_controller.dart';
+import 'package:gantt/src/controllers/milestone_controller.dart';
 import 'package:gantt/src/controllers/task_controller.dart';
 import 'package:gantt/src/controllers/timeline_conroller.dart';
+import 'package:gantt/src/gantt_milestone.dart';
 import 'package:gantt/src/gantt_task.dart';
 import 'package:gantt/src/models/milestone.dart';
 import 'package:gantt/src/models/subject.dart';
@@ -88,7 +90,19 @@ class _GanttContainerState extends State<GanttContainer> {
             ),
           ),
         );
-      } else if (item is GanttMilestoneData) {}
+      } else if (item is GanttMilestoneData) {
+        children.add(
+          GanttMilestone(
+            title: item.title,
+            controller: GanttMilestoneController(
+              ganttController: ganttController,
+              timelineController: ganttTimelineController,
+              date: item.date,
+              finished: item.finished,
+            ),
+          ),
+        );
+      }
     }
     subjects = children;
   }
