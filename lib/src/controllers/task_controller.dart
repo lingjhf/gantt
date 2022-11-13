@@ -51,23 +51,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     );
   }
 
-  bool _needAddDayForward(double left) {
-    if (timelineController.addDayForwardOf(left)) {
-      _updateLeftByDate();
-      timelineController.updateHighlight(left: this.left);
-      return true;
-    }
-    return false;
-  }
-
-  bool _needAddDayBack(double left, double width) {
-    if (timelineController.addDayBackOf(left, width)) {
-      _updateLeftByDate();
-      return true;
-    }
-    return false;
-  }
-
   //连接下一个subject
   void connectNextSubject(GanttSubjectController subject) {
     // _subjectTree[subject]
@@ -99,17 +82,17 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   @override
   void dragUpdate(double dx) {
     super.dragUpdate(dx);
-    if (_needAddDayForward(left)) {
+    if (leftOverflowTimeline(_startDate)) {
       return;
     }
-    if (_needAddDayBack(left, width)) {
+    if (rightOverflowTimeline(_startDate)) {
       return;
     }
     if (deltaX == 0) return;
     if (deltaX < 0) {
-      timelineController.scrollLeftOf(left);
+      leftOverflowViewWidth();
     } else {
-      timelineController.scrollRightOf(left, width);
+      rightOverflowViewWidth();
     }
     var startIndex = getStartIndex(left, dayWidth);
     var endIndex = getEndIndex(left, width, dayWidth);
@@ -142,8 +125,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   void resizeLeftUpdate(double dx) {
     super.resizeLeftUpdate(dx);
     _progressController.width = width;
-    if (_needAddDayForward(left)) return;
-    timelineController.scrollLeftOf(left);
+    if (leftOverflowTimeline(_startDate)) return;
+    leftOverflowViewWidth();
     if (width > dayWidth) {
       var startIndex = getStartIndex(left, dayWidth);
       _startDate = timelineController.dates[startIndex];
@@ -185,8 +168,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   void resizeRightUpdate(double dx) {
     super.resizeRightUpdate(dx);
     _progressController.width = width;
-    if (_needAddDayBack(left, width)) return;
-    timelineController.scrollRightOf(left, width);
+    if (rightOverflowTimeline(_startDate)) return;
+    rightOverflowViewWidth();
     if (width > dayWidth) {
       var endIndex = getEndIndex(left, width, dayWidth);
       _endDate = timelineController.dates[endIndex - 1];
