@@ -30,6 +30,7 @@ class GanttMilestoneController extends GanttSubjectController
       width: width,
       left: left,
       startDate: date,
+      endDate: date,
     );
   }
 
@@ -67,6 +68,7 @@ class GanttMilestoneController extends GanttSubjectController
       left: startIndex * dayWidth,
       width: width,
       startDate: date,
+      endDate: date,
     );
   }
 
