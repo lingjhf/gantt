@@ -28,13 +28,20 @@ class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
       ? widget.controller.highlight.endDate?.format('MM-dd') ?? ''
       : '';
 
+  double singleDateMinWidth = 45;
+
+  double multiDateMinWidth = 80;
+
   double get width {
     if (widget.controller.highlight.startDate ==
         widget.controller.highlight.endDate) {
-      return 45;
+      if (widget.controller.unit.dayWidth > singleDateMinWidth) {
+        return widget.controller.unit.dayWidth;
+      }
+      return singleDateMinWidth;
     }
-    if (widget.controller.highlight.width < 80) {
-      return 80;
+    if (widget.controller.highlight.width < multiDateMinWidth) {
+      return multiDateMinWidth;
     }
 
     return widget.controller.highlight.width;
