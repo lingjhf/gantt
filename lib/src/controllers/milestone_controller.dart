@@ -34,6 +34,16 @@ class GanttMilestoneController extends GanttSubjectController
     );
   }
 
+  @override
+  bool rightOverflowTimeline(DateTime date) {
+    if (left + dayWidth > timelineController.totalWidth) {
+      timelineController.addBackDay();
+      left = getSubjectLeft(date);
+      return true;
+    }
+    return false;
+  }
+
   //注册时间轴高亮
   @override
   void dragStart(double dx) {
