@@ -19,6 +19,7 @@ class GanttTask extends StatefulWidget {
   final double progressHeight;
   final double progressCursorSize = 12;
   final double resizeHandleWidth = 12;
+  final double connectPointSize = 20;
   final Color progressBackgroundColor;
   final Color progressProgressColor;
   final GanttTaskController controller;
@@ -35,7 +36,9 @@ class _GanttTaskState extends State<GanttTask> {
       : widget.controller.left;
 
   double get taskWidth => widget.controller.focused
-      ? widget.controller.width + widget.resizeHandleWidth * 2
+      ? widget.controller.width +
+          widget.resizeHandleWidth * 2 +
+          widget.connectPointSize
       : widget.controller.width;
 
   double get cursorLeft =>
@@ -181,6 +184,26 @@ class _GanttTaskState extends State<GanttTask> {
     );
   }
 
+  Widget buildConnectPoint() {
+    return SizedBox(
+      width: widget.connectPointSize,
+      height: widget.connectPointSize,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: GestureDetector(
+          child: Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 2),
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -218,6 +241,10 @@ class _GanttTaskState extends State<GanttTask> {
                           visible: widget.controller.focused,
                           child: buildResizeRight(),
                         ),
+                        Visibility(
+                          visible: widget.controller.focused,
+                          child: buildConnectPoint(),
+                        )
                       ],
                     ),
                   ),
