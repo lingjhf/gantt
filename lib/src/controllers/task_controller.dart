@@ -19,6 +19,8 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _progressController = ProgressController(progress: progress, width: width);
   }
 
+  final GlobalKey key = GlobalKey();
+
   bool focused = false;
 
   DateTime _startDate;
