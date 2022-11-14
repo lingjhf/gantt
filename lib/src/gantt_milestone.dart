@@ -24,6 +24,12 @@ class _GanttMilestoneState extends State<GanttMilestone> {
     super.initState();
   }
 
+  void onTap() {
+    setState(() {
+      widget.controller.finished = !widget.controller.finished;
+    });
+  }
+
   void onDragStart(DragStartDetails details) {
     widget.controller.dragStart(details.globalPosition.dx);
   }
@@ -48,16 +54,41 @@ class _GanttMilestoneState extends State<GanttMilestone> {
     );
   }
 
+  Widget buildUnfinished() {
+    var halfWidth = widget.controller.width / 2;
+    return buildBorder(
+      size: widget.controller.width,
+      radius: 4,
+      child: Center(
+        child: buildBorder(
+          size: halfWidth,
+          radius: halfWidth,
+        ),
+      ),
+    );
+  }
+
+  Widget buildFinished() {
+    return Container(
+      width: widget.controller.width,
+      height: widget.controller.width,
+      decoration: BoxDecoration(
+        color: const Color(0xff67c23a),
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var containerWidth =
         math.sqrt(math.pow(widget.controller.width, 2) / 2) * 2;
-    var halfWidth = widget.controller.width / 2;
     return Stack(
       children: [
         Positioned(
           left: widget.controller.left,
           child: GestureDetector(
+            onTap: onTap,
             onHorizontalDragStart: onDragStart,
             onHorizontalDragUpdate: onDragUpdate,
             onHorizontalDragEnd: onDragEnd,
@@ -67,16 +98,9 @@ class _GanttMilestoneState extends State<GanttMilestone> {
               child: Center(
                 child: Transform.rotate(
                   angle: math.pi / 4,
-                  child: buildBorder(
-                    size: widget.controller.width,
-                    radius: 4,
-                    child: Center(
-                      child: buildBorder(
-                        size: halfWidth,
-                        radius: halfWidth,
-                      ),
-                    ),
-                  ),
+                  child: widget.controller.finished
+                      ? buildFinished()
+                      : buildUnfinished(),
                 ),
               ),
             ),
