@@ -55,8 +55,11 @@ class _GanttBackgroundState extends State<GanttBackground> {
         width = 0;
       }
     }
-    return Stack(
-      children: children,
+    return DecoratedBox(
+      decoration: const BoxDecoration(color: Colors.white),
+      child: Stack(
+        children: children,
+      ),
     );
   }
 }
