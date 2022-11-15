@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'controllers/connect_controller.dart';
 import 'controllers/gantt_controller.dart';
 import 'controllers/milestone_controller.dart';
 import 'controllers/task_controller.dart';
 import 'controllers/timeline_controller.dart';
 import 'enums.dart';
 import 'gantt_background.dart';
+import 'gantt_connect_line_container.dart';
 import 'gantt_list.dart';
 import 'gantt_milestone.dart';
 import 'gantt_task.dart';
@@ -41,6 +43,8 @@ class _GanttContainerState extends State<GanttContainer> {
 
   late GanttTimelineController ganttTimelineController;
 
+  late GanttConnectLineController ganttConnectLineController;
+
   List<Widget> subjects = [];
 
   double get timelineHeight => widget.unit == GanttDateUnit.year ? 36 / 2 : 36;
@@ -56,6 +60,8 @@ class _GanttContainerState extends State<GanttContainer> {
       unit: widget.unit,
       viewWidth: widget.viewWidth,
     );
+
+    ganttConnectLineController = GanttConnectLineController();
 
     ganttTimelineController.on('onAddBackDay', (arg) => setState(() {}));
     ganttTimelineController.on('onAddForwardDay', (arg) => setState(() {}));
@@ -84,6 +90,7 @@ class _GanttContainerState extends State<GanttContainer> {
             controller: GanttTaskController(
               ganttController: ganttController,
               timelineController: ganttTimelineController,
+              connectLineController: ganttConnectLineController,
               startDate: item.startDate,
               endDate: item.endDate,
               progress: item.progress,
@@ -97,6 +104,7 @@ class _GanttContainerState extends State<GanttContainer> {
             controller: GanttMilestoneController(
               ganttController: ganttController,
               timelineController: ganttTimelineController,
+              connectLineController: ganttConnectLineController,
               date: item.date,
               finished: item.finished,
             ),
@@ -136,6 +144,7 @@ class _GanttContainerState extends State<GanttContainer> {
       child: Stack(
         children: [
           GanttBackground(controller: ganttTimelineController),
+          GanttConnectLineContainer(controller: ganttConnectLineController),
           GestureDetector(
             onTap: onTapBody,
             child: GanttList(children: subjects),
