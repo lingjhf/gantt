@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 class GanttConnectLine extends StatelessWidget {
   const GanttConnectLine({
     super.key,
-    required this.firstOffset,
-    required this.secondOffset,
+    required this.startOffset,
+    required this.endOffset,
   });
 
-  final Offset firstOffset;
+  final Offset startOffset;
 
-  final Offset secondOffset;
+  final Offset endOffset;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
       child: CustomPaint(
         painter: GanttConnectLinePainter(
-          firstOffset: firstOffset,
-          secondOffset: secondOffset,
+          startOffset: startOffset,
+          endOffset: endOffset,
         ),
       ),
     );
@@ -26,18 +26,16 @@ class GanttConnectLine extends StatelessWidget {
 
 class GanttConnectLinePainter extends CustomPainter {
   const GanttConnectLinePainter({
-    required this.firstOffset,
-    required this.secondOffset,
+    required this.startOffset,
+    required this.endOffset,
   });
 
-  final Offset firstOffset;
+  final Offset startOffset;
 
-  final Offset secondOffset;
+  final Offset endOffset;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    // TODO: implement paint
-  }
+  void paint(Canvas canvas, Size size) {}
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
