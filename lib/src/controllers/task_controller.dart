@@ -9,6 +9,7 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   GanttTaskController({
     required super.ganttController,
     required super.timelineController,
+    required super.connectLineController,
     DateTime? startDate,
     DateTime? endDate,
     int progress = 0,

@@ -7,6 +7,7 @@ class GanttMilestoneController extends GanttSubjectController
   GanttMilestoneController({
     required super.ganttController,
     required super.timelineController,
+    required super.connectLineController,
     DateTime? date,
     this.finished = false,
   }) : date = date ?? DateTime.now() {
