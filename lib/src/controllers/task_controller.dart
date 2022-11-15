@@ -19,8 +19,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _progressController = ProgressController(progress: progress, width: width);
   }
 
-  bool focused = false;
-
   DateTime _startDate;
 
   DateTime _endDate;
@@ -189,33 +187,10 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _progressController.width = width;
   }
 
-  void onFocusOut(VoidCallback callback) {
-    ganttController.on('onCurrentSubjectChange', (oldId) {
-      if (id == oldId) {
-        focused = false;
-        invisibleTimelineHighlight();
-        callback();
-      }
-    });
-  }
-
-  void onFocusIn(VoidCallback callback) {
-    if (id != ganttController.currentSubject?.id) {
-      focused = true;
-      ganttController.setCurrentSubject(this);
-      visibleTimelineHighlight();
-      callback();
-    }
-  }
-
   void onLeftChange(VoidCallback callback) {
     timelineController.on('onAddForwardDay', (p0) {
       _updateLeftByDate();
       callback();
     });
-  }
-
-  void onConnectNext(){
-    
   }
 }
