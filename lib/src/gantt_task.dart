@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../gantt_connect_point.dart';
 import 'controllers/task_controller.dart';
 import 'gantt_progress_bar.dart';
 
@@ -184,26 +185,6 @@ class _GanttTaskState extends State<GanttTask> {
     );
   }
 
-  Widget buildConnectPoint() {
-    return SizedBox(
-      width: widget.connectPointSize,
-      height: widget.connectPointSize,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: GestureDetector(
-          child: Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 2),
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -243,7 +224,10 @@ class _GanttTaskState extends State<GanttTask> {
                         ),
                         Visibility(
                           visible: widget.controller.focused,
-                          child: buildConnectPoint(),
+                          child: GanttConnectPoint(
+                            size: widget.connectPointSize,
+                            onTap: widget.controller.onConnectNext,
+                          ),
                         )
                       ],
                     ),
