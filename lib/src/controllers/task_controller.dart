@@ -19,8 +19,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
     _progressController = ProgressController(progress: progress, width: width);
   }
 
-  final GlobalKey key = GlobalKey();
-
   bool focused = false;
 
   DateTime _startDate;
@@ -28,8 +26,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
   DateTime _endDate;
 
   late ProgressController _progressController;
-
-  final Map<String, GanttSubjectController> _subjectTree = {};
 
   double get progressWidth => _progressController.progressWidth;
 
@@ -51,11 +47,6 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       startDate: _startDate,
       endDate: _endDate,
     );
-  }
-
-  //连接下一个subject
-  void connectNextSubject(GanttSubjectController subject) {
-    // _subjectTree[subject]
   }
 
   void progressStart(double dx) {
@@ -222,5 +213,9 @@ class GanttTaskController extends GanttSubjectController with DragResizeMixin {
       _updateLeftByDate();
       callback();
     });
+  }
+
+  void onConnectNext(){
+    
   }
 }
