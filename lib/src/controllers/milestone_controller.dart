@@ -16,8 +16,6 @@ class GanttMilestoneController extends GanttSubjectController
   @override
   double get width => 20;
 
-  bool focused = false;
-
   DateTime date;
 
   bool finished;
