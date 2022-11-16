@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../gantt_connect_point.dart';
+import 'gantt_connect_point.dart';
 import 'controllers/task_controller.dart';
 import 'gantt_progress_bar.dart';
 
