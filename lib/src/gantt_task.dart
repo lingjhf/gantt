@@ -212,6 +212,7 @@ class _GanttTaskState extends State<GanttTask> {
                           onHorizontalDragUpdate: onDragUpdate,
                           onHorizontalDragEnd: onDragEnd,
                           child: GanttProgressBar(
+                            key: widget.controller.key,
                             width: widget.controller.width,
                             progressWidth: widget.controller.progressWidth,
                             backgroundColor: widget.progressBackgroundColor,
