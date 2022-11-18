@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 
-import '../models/connect_line.dart';
+import '../mixins/event_bus.dart';
+import 'connect_line_controller.dart';
 
-class GanttConnectLineController {
-  GanttConnectLineController();
+//控制添加连接和删除连接
+class GanttConnectContainerController with EventBusMixin {
+  GanttConnectContainerController();
 
-  final List<ConnectLineData> _connectLines = [];
+  final GlobalKey key = GlobalKey();
 
-  Offset getOffsetByGlobalKey(GlobalKey key) {
-    var renderBox = key.currentContext?.findRenderObject() as RenderBox?;
-    var offset = renderBox?.globalToLocal(Offset.zero);
-    return offset ?? Offset.zero;
+  final List<GanttConnectLineController> connectLines = [];
+
+  Offset getRelativeOffset(Offset point) {
+    return (key.currentContext?.findRenderObject() as RenderBox?)
+            ?.globalToLocal(point) ??
+        Offset.zero;
   }
 
-  void addByGlobKey(GlobalKey startKey, GlobalKey endKey) {
-    _connectLines.add(
-      ConnectLineData(
-        startOffset: getOffsetByGlobalKey(startKey),
-        endOffset: getOffsetByGlobalKey(endKey),
-      ),
+  void addConnectLine(GanttConnectLineController connectLine) {
+    connectLines.add(
+      connectLine
+        ..startOffset = getRelativeOffset(connectLine.startOffset)
+        ..endOffset = getRelativeOffset(connectLine.endOffset),
     );
+    emit('addConnectLine');
   }
 }
