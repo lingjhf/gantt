@@ -65,10 +65,16 @@ class _GanttTaskState extends State<GanttTask> {
 
   void onDragUpdate(DragUpdateDetails details) {
     setState(() => widget.controller.dragUpdate(details.globalPosition.dx));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller.updateConnect();
+    });
   }
 
   void onDragEnd(DragEndDetails details) {
     setState(() => widget.controller.dragEnd());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller.updateConnect();
+    });
   }
 
   void onResizeLeftStart(DragStartDetails details) {
@@ -78,10 +84,16 @@ class _GanttTaskState extends State<GanttTask> {
   void onResizeLeftUpdate(DragUpdateDetails details) {
     setState(
         () => widget.controller.resizeLeftUpdate(details.globalPosition.dx));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller.updatePrevConnect();
+    });
   }
 
   void onResizeLeftEnd(DragEndDetails details) {
     setState(() => widget.controller.resizeLeftEnd());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller.updatePrevConnect();
+    });
   }
 
   void onResizeRightStart(DragStartDetails details) {
@@ -91,10 +103,16 @@ class _GanttTaskState extends State<GanttTask> {
   void onResizeRightUpdate(DragUpdateDetails details) {
     setState(
         () => widget.controller.resizeRightUpdate(details.globalPosition.dx));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller.updateNextConnect();
+    });
   }
 
   void onResizeRightEnd(DragEndDetails details) {
     setState(() => widget.controller.resizeRightEnd());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller.updateNextConnect();
+    });
   }
 
   void onProgressStart(DragStartDetails details) {
