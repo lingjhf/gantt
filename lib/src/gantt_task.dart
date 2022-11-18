@@ -11,8 +11,8 @@ class GanttTask extends StatefulWidget {
     this.title = '',
     this.containerHeight = 36,
     this.progressHeight = 20,
-    this.progressBackgroundColor = const Color(0xFFBBDEFB),
-    this.progressProgressColor = Colors.blue,
+    this.progressBackgroundColor,
+    this.progressProgressColor,
   });
   final String title;
 
@@ -21,8 +21,8 @@ class GanttTask extends StatefulWidget {
   final double progressCursorSize = 12;
   final double resizeHandleWidth = 12;
   final double connectPointSize = 20;
-  final Color progressBackgroundColor;
-  final Color progressProgressColor;
+  final Color? progressBackgroundColor;
+  final Color? progressProgressColor;
   final GanttTaskController controller;
 
   @override
