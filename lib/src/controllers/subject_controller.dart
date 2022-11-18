@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'connect_controller.dart';
+import 'connect_line_controller.dart';
 import 'gantt_controller.dart';
 import 'timeline_controller.dart';
 
 typedef SubjectMap = Map<String, GanttSubjectController>;
+
+typedef ConnectLineMap = Map<String, GanttConnectLineController>;
 
 abstract class GanttSubjectController {
   GanttSubjectController({
     String? id,
     required this.ganttController,
     required this.timelineController,
-    required this.connectLineController,
+    required this.connectContainerController,
   }) : id = id ?? const Uuid().v1();
   final String id;
 
@@ -28,9 +31,15 @@ abstract class GanttSubjectController {
 
   GanttTimelineController timelineController;
 
-  GanttConnectLineController connectLineController;
+  GanttConnectContainerController connectContainerController;
 
   final SubjectMap _nextSubjects = {};
+
+  final SubjectMap _prevSubjects = {};
+
+  final ConnectLineMap _nextConnectLines = {};
+
+  final ConnectLineMap _prevConnectLines = {};
 
   bool connectActive = false;
 
@@ -93,16 +102,48 @@ abstract class GanttSubjectController {
     }
   }
 
+  GanttSubjectController? getPrevSubject(String id) {
+    return _prevSubjects[id];
+  }
+
+  GanttConnectLineController? getPrevConnectLine(String id) {
+    return _prevConnectLines[id];
+  }
+
+  void connectPrevSubject(
+    String id,
+    GanttSubjectController subject,
+    GanttConnectLineController connect,
+  ) {
+    _prevSubjects[id] = subject;
+    _prevConnectLines[id] = connect;
+  }
+
+  void disconnectPrevSubject(String id) {
+    _prevSubjects.remove(id);
+    _nextConnectLines.remove(id);
+  }
+
   GanttSubjectController? getNextSubject(String id) {
     return _nextSubjects[id];
   }
 
-  void addNextSubject(String id, GanttSubjectController subject) {
-    _nextSubjects[id] = subject;
+  GanttConnectLineController? getNextConnectLine(String id) {
+    return _nextConnectLines[id];
   }
 
-  void remoteNextSubject(String id) {
+  void connectNextSubject(
+    String id,
+    GanttSubjectController subject,
+    GanttConnectLineController connect,
+  ) {
+    _nextSubjects[id] = subject;
+    _nextConnectLines[id] = connect;
+  }
+
+  void disconnectNextSubject(String id) {
     _nextSubjects.remove(id);
+    _nextConnectLines.remove(id);
   }
 
   //检查是否存在循环连接
@@ -127,14 +168,42 @@ abstract class GanttSubjectController {
   //4.判断是否会导致循环连接
   void passiveConnect() {
     if (ganttController.currentSubject == null) return;
-    if (!ganttController.currentSubject!.connectActive) return;
-    if (ganttController.currentSubject!.getNextSubject(id) != null) return;
-    if (checkCircularConnect(ganttController.currentSubject!.id)) return;
-    ganttController.currentSubject!.addNextSubject(id, this);
-    connectLineController.addByGlobKey(
-      ganttController.currentSubject!.key,
-      key,
+    final ganttCurrentSubject = ganttController.currentSubject!;
+    if (!ganttCurrentSubject.connectActive) return;
+    if (ganttCurrentSubject.getNextSubject(id) != null) return;
+    if (checkCircularConnect(ganttCurrentSubject.id)) return;
+    final connectLine = GanttConnectLineController(
+      startSubject: ganttCurrentSubject,
+      endSubject: this,
     );
+    ganttCurrentSubject.connectNextSubject(id, this, connectLine);
+    connectPrevSubject(id, ganttCurrentSubject, connectLine);
+    connectContainerController.addConnectLine(connectLine);
+  }
+
+  void updateNextConnect() {
+    for (final connect in _nextConnectLines.values) {
+      connect.update();
+      connect.startOffset =
+          connectContainerController.getRelativeOffset(connect.startOffset);
+      connect.endOffset =
+          connectContainerController.getRelativeOffset(connect.endOffset);
+    }
+  }
+
+  void updatePrevConnect() {
+    for (final connect in _prevConnectLines.values) {
+      connect.update();
+      connect.startOffset =
+          connectContainerController.getRelativeOffset(connect.startOffset);
+      connect.endOffset =
+          connectContainerController.getRelativeOffset(connect.endOffset);
+    }
+  }
+
+  void updateConnect() {
+    updateNextConnect();
+    updatePrevConnect();
   }
 
   void onConnectNext(bool active) {
