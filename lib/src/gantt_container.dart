@@ -43,7 +43,7 @@ class _GanttContainerState extends State<GanttContainer> {
 
   late GanttTimelineController ganttTimelineController;
 
-  late GanttConnectLineController ganttConnectLineController;
+  late GanttConnectContainerController ganttConnectContainerController;
 
   List<Widget> subjects = [];
 
@@ -61,7 +61,7 @@ class _GanttContainerState extends State<GanttContainer> {
       viewWidth: widget.viewWidth,
     );
 
-    ganttConnectLineController = GanttConnectLineController();
+    ganttConnectContainerController = GanttConnectContainerController();
 
     ganttTimelineController.on('onAddBackDay', (arg) => setState(() {}));
     ganttTimelineController.on('onAddForwardDay', (arg) => setState(() {}));
@@ -90,7 +90,7 @@ class _GanttContainerState extends State<GanttContainer> {
             controller: GanttTaskController(
               ganttController: ganttController,
               timelineController: ganttTimelineController,
-              connectLineController: ganttConnectLineController,
+              connectContainerController: ganttConnectContainerController,
               startDate: item.startDate,
               endDate: item.endDate,
               progress: item.progress,
@@ -104,7 +104,7 @@ class _GanttContainerState extends State<GanttContainer> {
             controller: GanttMilestoneController(
               ganttController: ganttController,
               timelineController: ganttTimelineController,
-              connectLineController: ganttConnectLineController,
+              connectContainerController: ganttConnectContainerController,
               date: item.date,
               finished: item.finished,
             ),
@@ -144,7 +144,7 @@ class _GanttContainerState extends State<GanttContainer> {
       child: Stack(
         children: [
           GanttBackground(controller: ganttTimelineController),
-          GanttConnectLineContainer(controller: ganttConnectLineController),
+          GanttConnectLineContainer(controller: ganttConnectContainerController),
           GestureDetector(
             onTap: onTapBody,
             child: GanttList(children: subjects),
