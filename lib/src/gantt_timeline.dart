@@ -50,21 +50,7 @@ class _GanttTimelineState extends State<GanttTimeline> {
             left: item.left,
             top: 0,
             bottom: 0,
-            child: SizedBox(
-              width: item.width,
-              child: Stack(children: [
-                builder(item),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    height: 8,
-                    width: 1,
-                    color: Colors.grey.shade100,
-                  ),
-                )
-              ]),
-            ),
+            child: SizedBox(width: item.width, child: builder(item)),
           ),
         GanttTimelineHighlight(controller: widget.controller)
       ],

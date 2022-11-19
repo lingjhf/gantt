@@ -4,9 +4,14 @@ import 'controllers/timeline_controller.dart';
 import 'utils/datetime.dart';
 
 class GanttTimelineHighlight extends StatefulWidget {
-  const GanttTimelineHighlight({super.key, required this.controller});
+  const GanttTimelineHighlight(
+      {super.key, required this.controller, Color? color})
+      : color = color ?? const Color(0xff1A0829);
 
   final GanttTimelineController controller;
+
+  final Color color;
+
   @override
   State<StatefulWidget> createState() => _GanttTimelineHighlightState();
 }
@@ -59,7 +64,11 @@ class _GanttTimelineHighlightState extends State<GanttTimelineHighlight> {
           width: width,
           padding: const EdgeInsets.symmetric(horizontal: 4),
           decoration: const BoxDecoration(
-            color: Colors.blue,
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [Color(0xff6505B4), Color(0xffCD1D9C)],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(2)),
           ),
           child: Row(

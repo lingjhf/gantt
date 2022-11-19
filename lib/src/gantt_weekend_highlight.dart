@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'controllers/timeline_controller.dart';
 
-class GanttBackground extends StatefulWidget {
-  const GanttBackground({super.key, required this.controller});
+class GanttWeekendHighlight extends StatefulWidget {
+  const GanttWeekendHighlight(
+      {super.key, required this.controller, Color? color})
+      : color = color ?? const Color(0xff24263A);
   final GanttTimelineController controller;
+  final Color color;
+
   @override
-  State<StatefulWidget> createState() => _GanttBackgroundState();
+  State<StatefulWidget> createState() => _GanttWeekendHighlightState();
 }
 
-class _GanttBackgroundState extends State<GanttBackground> {
+class _GanttWeekendHighlightState extends State<GanttWeekendHighlight> {
   @override
   void initState() {
     widget.controller.on('onChange', (arg) => setState(() {}));
@@ -21,10 +25,7 @@ class _GanttBackgroundState extends State<GanttBackground> {
       left: left,
       top: 0,
       bottom: 0,
-      child: Container(
-        width: width,
-        color: const Color.fromARGB(21, 158, 158, 158),
-      ),
+      child: Container(width: width, color: widget.color),
     );
   }
 
@@ -55,11 +56,8 @@ class _GanttBackgroundState extends State<GanttBackground> {
         width = 0;
       }
     }
-    return DecoratedBox(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: Stack(
-        children: children,
-      ),
+    return Stack(
+      children: children,
     );
   }
 }

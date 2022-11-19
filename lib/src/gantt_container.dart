@@ -6,7 +6,7 @@ import 'controllers/milestone_controller.dart';
 import 'controllers/task_controller.dart';
 import 'controllers/timeline_controller.dart';
 import 'enums.dart';
-import 'gantt_background.dart';
+import 'gantt_weekend_highlight.dart';
 import 'gantt_connect_line_container.dart';
 import 'gantt_list.dart';
 import 'gantt_milestone.dart';
@@ -33,6 +33,12 @@ class GanttContainer extends StatefulWidget {
   final double viewWidth;
   final ScrollController scrollController;
   final List<GanttSubjectData> data;
+
+  final Color headerColor = const Color(0xFF141517);
+
+  final Color bodyColor = const Color(0xFF141517);
+
+  final Color weekendHighlight = const Color(0xff282c34);
 
   @override
   State<StatefulWidget> createState() => _GanttContainerState();
@@ -123,14 +129,11 @@ class _GanttContainerState extends State<GanttContainer> {
   Widget buildTimeline() {
     return Container(
       height: timelineHeight,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
-      ),
+      color: widget.headerColor,
       child: DefaultTextStyle(
         style: const TextStyle(
           fontSize: 12,
-          color: Colors.black,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
         child: GanttTimeline(controller: ganttTimelineController),
@@ -141,15 +144,22 @@ class _GanttContainerState extends State<GanttContainer> {
   //构建甘特图体
   Widget buildBody() {
     return Expanded(
-      child: Stack(
-        children: [
-          GanttBackground(controller: ganttTimelineController),
-          GanttConnectLineContainer(controller: ganttConnectContainerController),
-          GestureDetector(
-            onTap: onTapBody,
-            child: GanttList(children: subjects),
-          ),
-        ],
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: widget.bodyColor),
+        child: Stack(
+          children: [
+            GanttWeekendHighlight(
+              controller: ganttTimelineController,
+              color: widget.weekendHighlight.withOpacity(0.1),
+            ),
+            GanttConnectLineContainer(
+                controller: ganttConnectContainerController),
+            GestureDetector(
+              onTap: onTapBody,
+              child: GanttList(children: subjects),
+            ),
+          ],
+        ),
       ),
     );
   }

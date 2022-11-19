@@ -134,20 +134,22 @@ class _GanttTaskState extends State<GanttTask> {
         onHorizontalDragStart: onResizeLeftStart,
         onHorizontalDragUpdate: onResizeLeftUpdate,
         onHorizontalDragEnd: onResizeLeftEnd,
-        child: MouseRegion(
-          cursor: SystemMouseCursors.resizeLeft,
-          child: Row(
+        child: SizedBox(
+          width: widget.resizeHandleWidth,
+          child: Stack(
             children: [
-              Container(
-                width: 8,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    width: 2,
-                    color: Colors.grey,
-                  ),
-                ),
-              )
+              CustomPaint(
+                painter: ResizeLeftPainter(),
+              ),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.resizeLeft,
+                    child: Container(color: Colors.transparent),
+                  ))
             ],
           ),
         ),
@@ -261,4 +263,24 @@ class _GanttTaskState extends State<GanttTask> {
       ],
     );
   }
+}
+
+class ResizeLeftPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // TODO: implement paint
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+class ResizeRightPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // TODO: implement paint
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
